@@ -171,15 +171,18 @@ void main()
 	// PLEASE DO NOT CHANGE ANYTHING ABOVE !!!
 	// Calculate the diffuse and specular lighting below.
 
-	// ----- Diffuse Lighting -----
-    diff = max(dot(normal, lightdir), 0.0);
+	// Flip the X coordinate to reverse the highlight's orbit direction.
+	vec3 fixedLightDir = vec3(-lightdir.x, lightdir.y, lightdir.z);
 
-    // ----- Specular Lighting -----
-    if(diff > 0.0) {
-        vec3 viewDir = normalize(-vPosition);
-        vec3 reflectDir = reflect(-lightdir, normal);
-        spec = pow(max(dot(viewDir, reflectDir), 0.0), phongExp);
-    }
+	// ----- Diffuse Lighting -----
+	diff = max(dot(normal, fixedLightDir), 0.0);
+
+	// ----- Specular Lighting -----
+	if(diff > 0.0) {
+		vec3 viewDir = normalize(-vPosition);
+		vec3 reflectDir = reflect(-fixedLightDir, normal);
+		spec = pow(max(dot(viewDir, reflectDir), 0.0), phongExp);
+	}
 
 	// PLEASE DO NOT CHANGE ANYTHING BELOW !!!
 	/////////////////////////////////////////////////////////////////////////////
